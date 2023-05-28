@@ -4,16 +4,13 @@ from bs4 import BeautifulSoup
 
 class MetofficeScraper:
     def __init__(self, date: str) -> None:
-        self.headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
-        }
         self.url = f"https://www.metoffice.gov.uk/weather/forecast/u99zpk026#"
         self.date = date
-        self.soup = None
+        self.soup = self.fetch_page()
 
     def fetch_page(self):
         response = requests.get(self.url)
-        self.soup = BeautifulSoup(response.text, "html.parser")
+        return BeautifulSoup(response.text, "html.parser")
 
     def get_sunrise_time(self) -> str:
         req_date_tag = self.soup.find("li", attrs={"data-tab-id": self.date})
