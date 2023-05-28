@@ -7,9 +7,8 @@ class MetofficeScraper:
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
         }
-        self.url = (
-            f"https://www.metoffice.gov.uk/weather/forecast/u99zpk026#?date={date}"
-        )
+        self.url = f"https://www.metoffice.gov.uk/weather/forecast/u99zpk026#"
+        self.date = date
         self.soup = None
 
     def fetch_page(self):
@@ -17,17 +16,21 @@ class MetofficeScraper:
         self.soup = BeautifulSoup(response.text, "html.parser")
 
     def get_sunrise_time(self) -> str:
-        sunrise_div_tag = self.soup.find("div", class_="weather-text sunrise-sunset")
+        req_date_tag = self.soup.find("li", attrs={"data-tab-id": self.date})
+        sunrise_div_tag = req_date_tag.find("div", class_="weather-text sunrise-sunset")
         return sunrise_div_tag.find("time").string
 
     def get_sunset_time(self) -> str:
-        sunset_div_tag = self.soup.find(
+        req_date_tag = self.soup.find("li", attrs={"data-tab-id": self.date})
+        sunset_div_tag = req_date_tag.find(
             "div", class_="weather-text sunrise-sunset sunset"
         )
         return sunset_div_tag.find("time").string
 
     def get_high_temperature(self) -> str:
-        return self.soup.find("span", class_="tab-temp-high").get_text(strip=True)
+        req_date_tag = self.soup.find("li", attrs={"data-tab-id": self.date})
+        return req_date_tag.find("span", class_="tab-temp-high").get_text(strip=True)
 
     def get_low_temperature(self) -> str:
-        return self.soup.find("span", class_="tab-temp-low").get_text(strip=True)
+        req_date_tag = self.soup.find("li", attrs={"data-tab-id": self.date})
+        return req_date_tag.find("span", class_="tab-temp-low").get_text(strip=True)
