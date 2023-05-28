@@ -1,18 +1,14 @@
 from data.weather import get_weather_data_concurrently
+from utils.helper_functions import is_valid_date, print_data
 from datetime import datetime
-from config import MAX_DATE
 
 
 def main():
     req_date = datetime(2023, 5, 29)
-    if req_date > MAX_DATE:
-        print("Date too big!")
+    if not is_valid_date(req_date):
         return
-
-    print("date: ", req_date.date())
     received_data = get_weather_data_concurrently(req_date)
-    for single_data in received_data:
-        print(single_data, received_data[single_data])
+    print_data(received_data, req_date)
 
 
 if __name__ == "__main__":
