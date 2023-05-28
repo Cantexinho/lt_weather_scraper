@@ -27,6 +27,8 @@ def get_timeanddate_data(req_date: datetime) -> dict:
 
 
 def get_weather_data(req_date: datetime) -> dict:
+    if datetime.now() >= req_date:
+        return
     weather_scraper = WeatherScraper(req_date.strftime("%d"))
     weather_data = {}
 
@@ -47,7 +49,7 @@ def main():
     timeanddate_data = get_timeanddate_data(req_date)
     weather_data = get_weather_data(req_date)
     print("date: ", req_date.date())
-    print(metoffice_data, timeanddate_data, weather_data)
+    print(metoffice_data, "\n", timeanddate_data, "\n", weather_data)
 
 
 if __name__ == "__main__":
