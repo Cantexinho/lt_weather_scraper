@@ -4,8 +4,8 @@ from bs4.element import Tag
 
 
 class WeatherScraper:
-    def __init__(self, date: str) -> None:
-        self.url = f"https://weather.com/weather/tenday/l/82308b95495a32864bc9cd5f4815c86946c990d246f6a521f2579b92b648ac52#detailIndex5"
+    def __init__(self, date: str, url: str) -> None:
+        self.url = url
         self.date = date
         self.soup = self.fetch_page()
         self.summary_tag = self.get_summary_tag()

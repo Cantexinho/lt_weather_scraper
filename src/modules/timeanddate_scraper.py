@@ -4,12 +4,12 @@ from bs4.element import Tag
 
 
 class TimeAndDateScraper:
-    def __init__(self, date: str) -> None:
+    def __init__(self, date: str, url: str) -> None:
         self.headers = {
             "Accept-Language": "en-US,en;q=0.9",
         }
         self.date = date
-        self.url = "https://www.timeanddate.com/weather/lithuania/vilnius/ext"
+        self.url = url
         self.soup = self.fetch_page()
         self.req_tr_tag = self.get_req_tr_tag()
 

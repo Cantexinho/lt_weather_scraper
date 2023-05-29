@@ -4,11 +4,12 @@ from datetime import datetime
 
 
 def main():
-    req_date = datetime(2023, 5, 29)
+    req_date = datetime(2023, 5, 30)
+    req_city = "Kaunas"
     if not is_valid_date(req_date):
         return
-    received_data = get_weather_data_concurrently(req_date)
-    print_data(received_data, req_date)
+    received_data = get_weather_data_concurrently(req_date, req_city)
+    print_data(received_data, req_date, req_city)
 
 
 if __name__ == "__main__":

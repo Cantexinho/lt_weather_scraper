@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 
 
 class MetofficeScraper:
-    def __init__(self, date: str) -> None:
-        self.url = f"https://www.metoffice.gov.uk/weather/forecast/u99zpk026#"
+    def __init__(self, date: str, url: str) -> None:
+        self.url = url
         self.date = date
         self.soup = self.fetch_page()
 

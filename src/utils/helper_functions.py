@@ -9,7 +9,8 @@ def is_valid_date(req_date: datetime) -> bool:
     return True
 
 
-def print_data(received_data: dict, req_date: datetime) -> None:
-    print("date: ", req_date.date())
+def print_data(received_data: dict, req_date: datetime, req_city: str) -> None:
+    print("City: ", req_city)
+    print("Date: ", req_date.date())
     for single_data in received_data:
         print(single_data, received_data[single_data])
