@@ -6,10 +6,8 @@ import threading
 from config import VILNIUS_PAGES, KAUNAS_PAGES
 
 
-def get_metoffice_data(req_date: datetime, city_urls: dict) -> dict:
-    metoffice = MetofficeScraper(
-        req_date.strftime("%Y-%m-%d"), city_urls.get("metoffice")
-    )
+def get_metoffice_data(req_date: datetime, city_url: str) -> dict:
+    metoffice = MetofficeScraper(req_date.strftime("%Y-%m-%d"), city_url)
     weather_data = {}
 
     weather_data["temp_high"] = metoffice.get_high_temperature()
@@ -19,10 +17,8 @@ def get_metoffice_data(req_date: datetime, city_urls: dict) -> dict:
     return weather_data
 
 
-def get_timeanddate_data(req_date: datetime, city_urls: dict) -> dict:
-    timeanddate = TimeAndDateScraper(
-        req_date.strftime("%#d %b"), city_urls.get("timeanddate")
-    )
+def get_timeanddate_data(req_date: datetime, city_url: str) -> dict:
+    timeanddate = TimeAndDateScraper(req_date.strftime("%#d %b"), city_url)
     weather_data = {}
 
     weather_data["temp_high"] = timeanddate.get_high_temperature()
@@ -32,10 +28,10 @@ def get_timeanddate_data(req_date: datetime, city_urls: dict) -> dict:
     return weather_data
 
 
-def get_weather_data(req_date: datetime, city_urls: dict) -> dict:
+def get_weather_data(req_date: datetime, city_url) -> dict:
     if datetime.now() >= req_date:
         return
-    weather_scraper = WeatherScraper(req_date.strftime("%d"), city_urls.get("weather"))
+    weather_scraper = WeatherScraper(req_date.strftime("%d"), city_url)
     weather_data = {}
 
     weather_data["temp_high"] = weather_scraper.get_high_temperature()
@@ -56,13 +52,19 @@ def get_weather_data_concurrently(req_date: datetime, city: str) -> dict:
     city_urls = get_city_urls(city)
 
     def _run_metoffice_data():
-        weather_data["www.metoffice.gov.uk"] = get_metoffice_data(req_date, city_urls)
+        weather_data["www.metoffice.gov.uk"] = get_metoffice_data(
+            req_date, city_urls.get("metoffice")
+        )
 
     def _run_timeanddate_data():
-        weather_data["www.timeanddate.com"] = get_timeanddate_data(req_date, city_urls)
+        weather_data["www.timeanddate.com"] = get_timeanddate_data(
+            req_date, city_urls.get("timeanddate")
+        )
 
     def _run_weather_data():
-        weather_data["www.weather.com"] = get_weather_data(req_date, city_urls)
+        weather_data["www.weather.com"] = get_weather_data(
+            req_date, city_urls.get("weather")
+        )
 
     thread1 = threading.Thread(target=_run_metoffice_data)
     thread2 = threading.Thread(target=_run_timeanddate_data)
