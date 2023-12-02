@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 def main():
-    req_date = datetime(2023, 5, 30)
+    req_date = datetime(2023, 12, 4)
     req_city = "Kaunas"
     if not is_valid_date(req_date):
         return
